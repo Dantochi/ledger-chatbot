@@ -4,8 +4,10 @@ from nltk.stem import WordNetLemmatizer
 
 nltk.download('punkt')
 nltk.download('wordnet')
-
+import tensorflow
 from tensorflow import keras
+
+# print("Num GPUs Available:", len(tensorflow.config.experimental.list_physical_devices('GPU')))
 
 word_collapse = WordNetLemmatizer()  # Collapsing of similar words to one
 intents = json.loads(open('intent.json').read())
@@ -23,7 +25,7 @@ for intent in intents['intent']:
             classes.append(intent['tag'])
 # print(documents)
 # print(words)
-words = [word_collapse.lemmatize(str(word)) for word in words if word not in ignore_letters]
+words = [word_collapse.lemmatize(word) for word in words if word not in ignore_letters]
 words = sorted(
     set(words))  # The set takes out the duplicates but the sorted sorts the element in ascending or descending order
 
@@ -42,20 +44,22 @@ for document in documents:
     word_patterns = document[0]
     word_patterns = [word_collapse.lemmatize(word.lower()) for word in word_patterns]
     for word in words:
-        bag.append(1) if word in word_patterns else bag.append(0)  # So I believe this line is trying to get the frequency of appearance of the words in the array word_patterns
+        bag.append(1) if word in word_patterns else bag.append(0)
+        # So I believe the above line is trying to get the frequency of appearance of the words in the array
+        # word_patterns
     output_row = list(output_empty)
     output_row[classes.index(document[1])] = 1
     training.append([bag, output_row])
-    bag_list.append([bag])
+    # bag_list.append([bag])
 
 random.shuffle(training)
-random.shuffle(bag_list)
-print(training)
-training = np.array(training)
-bag_list = np.array(bag_list)
+# random.shuffle(bag_list)
+# print(training)
+# training = np.array(training)
+# bag_list = np.array(bag_list)
 
-train_x = list(training[:, 0])
-train_y = list(training[:, 1])
+train_x = list(column[0] for column in training)
+train_y = list(column[1] for column in training)
 
 model = keras.models.Sequential()
 model.add(keras.layers.Dense(128, input_shape=(len(train_x[0]),), activation='relu'))

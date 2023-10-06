@@ -13,7 +13,7 @@ words_collapse = WordNetLemmatizer()  # This is used to collapse similar words t
 intents = json.loads(open("intent.json").read())
 words = pickle.load(open('words.pkl', 'rb'))  # rb stands for read bytes or read binary
 classes = pickle.load(open('classes.pkl', 'rb'))
-model = load_model('../chatbot_model.model')
+model = load_model('chatbot_model.keras')
 
 
 def clean_up_sentence(sentence):  # This function returns the list of words in a particular text without any duplicates
