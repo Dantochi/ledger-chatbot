@@ -2,7 +2,7 @@
   "intent": [
     {
       "tag": "Type of savings account",
-      "inputs": [
+      "input": [
       "What type of savings account should I choose?",
       "Which kind of savings account is most suitable for me?",
       "What type of savings account would be the best fit for my needs?",
@@ -18,7 +18,7 @@
   },
     {
       "tag": "Monthly savings strategy",
-      "inputs": [
+      "input": [
         "How much should I aim to save monthly?",
         "What should be my target monthly savings amount?",
         "How much should I strive to save each month?",
@@ -34,7 +34,7 @@
     },
     {
       "tag": "Savings Account vs Checking Account",
-      "inputs": [
+      "input": [
         "Can you explain the difference between a savings and checking account?",
         "What distinguishes a savings account from a checking account?",
         "Could you elucidate the disparities between a savings account and a checking account?",
