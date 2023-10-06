@@ -17,7 +17,7 @@ ignore_letters = ['?', '!', '.', ',']
 for intent in intents['intent']:
     for inputs in intent['input']:
         word_list = nltk.word_tokenize(inputs)
-        words.append(word_list)
+        words.extend(word_list)
         documents.append((word_list, intent['tag']))
         if intent['tag'] not in classes:
             classes.append(intent['tag'])
@@ -29,7 +29,8 @@ words = sorted(
 
 classes = sorted(set(classes))
 pickle.dump(words, open('words.pkl',
-                        'wb'))  # This pickle module helps in serialization or conversion of a python object such as list or arrays into a format that can be easily stored by the computer. As we all know it's the binary format.
+                        'wb'))  # This pickle module helps in serialization or conversion of a python object such as
+# list or arrays into a format that can be easily stored by the computer. As we all know it's the binary format.
 pickle.dump(classes, open('classes.pkl', 'wb'))
 
 training = []
@@ -44,7 +45,7 @@ for document in documents:
         bag.append(1) if word in word_patterns else bag.append(0)  # So I believe this line is trying to get the frequency of appearance of the words in the array word_patterns
     output_row = list(output_empty)
     output_row[classes.index(document[1])] = 1
-    training.append([output_row])
+    training.append([bag, output_row])
     bag_list.append([bag])
 
 random.shuffle(training)
@@ -54,7 +55,7 @@ training = np.array(training)
 bag_list = np.array(bag_list)
 
 train_x = list(training[:, 0])
-train_y = list(bag_list[:, 0])
+train_y = list(training[:, 1])
 
 model = keras.models.Sequential()
 model.add(keras.layers.Dense(128, input_shape=(len(train_x[0]),), activation='relu'))

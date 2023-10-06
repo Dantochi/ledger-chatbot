@@ -11,9 +11,10 @@ words_collapse = WordNetLemmatizer()  # This is used to collapse similar words t
 # This json.loads() used to convert the json file into format that is readable, editable and accessible by python.
 # From JSON to dictionary but structure is maintained.
 intents = json.loads(open("intent.json").read())
-words = pickle.load(open('words.pkl', 'rb'))  # rb stands for read bytes
+words = pickle.load(open('words.pkl', 'rb'))  # rb stands for read bytes or read binary
 classes = pickle.load(open('classes.pkl', 'rb'))
 model = load_model('../chatbot_model.model')
+
 
 def clean_up_sentence(sentence):  # This function returns the list of words in a particular text without any duplicates
     # This nltk.word_tokenize() helps to split words, its like the machine reading a text word for word and the
@@ -31,7 +32,8 @@ def bag_of_words(sentence):
         for i, word in enumerate(words):
             if word == w:
                 bag[i] = 1
-        return np.array(bag)
+    return np.array(bag)
+
 
 def predict_class(sentence):
     bow = bag_of_words(sentence)
@@ -48,10 +50,10 @@ def predict_class(sentence):
 
 def get_response(intents_list, intents_json):
     global result
-    tag = intents_list[0]['intents']
-    list_of_intents = intents_json['intents']
+    tag = intents_list[0]['intent']
+    list_of_intents = intents_json['intent']
     for i in list_of_intents:
-        if i['i'] == tag:
+        if i['tag'] == tag:
             result = random.choice(i['responses'])
             break
     return result
@@ -64,5 +66,3 @@ while True:
     ints = predict_class(message)
     res = get_response(ints, intents)
     print(res)
-
-
